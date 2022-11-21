@@ -1,0 +1,228 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست مقالات</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carousel/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carousel/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap-rtl.css' %}">
+    <link rel="stylesheet" href="{% static 'css/customcss/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome/css/all.css' %}">
+</head>
+<body>
+
+<!----- Start menu ----->
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm sticky-top">
+
+    <div class="container">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#mainmenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainmenu">
+            <ul class="navbar-nav pr-0 custom-navbar font-14 text-center">
+                <li class="nav-item ml-3 custom-nav-item"><a href="{% url 'home:home' %}" class="nav-link">صفحه اصلی</a>
+                </li>
+                <li class="nav-item ml-3 dropdown custom-nav-item"><a href="{% url 'course:list' %}" class="nav-link">دوره
+                    ها</a>
+
+                </li>
+                <li class="nav-item ml-3  custom-nav-item"><a href="#" class="nav-link">صفحات</a>
+
+
+                </li>
+                <li class="nav-item ml-3 custom-nav-item"><a href="{% url 'blog:list' %}" class="nav-link">بلاگ</a></li>
+                <li class="nav-item ml-3 custom-nav-item"><a href="{% url 'home:contact_us' %}" class="nav-link">تماس
+                    باما</a></li>
+            </ul>
+        </div>
+    </div>
+
+</nav>
+<!----- End menu ----->
+
+<div class="page-title d-flex flex-column justify-content-center align-items-center mb-4">
+    <h4 class="text-white mb-5">بلاگ آموزشی ایزی لرن</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <form method="get" action="{% url 'blog:search' %}">
+                    <div class="input-group">
+                        <input type="search" name="q" class="form-control" required
+                               placeholder="عنوان مورد نظر خود را جستجو کنید ...">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-info font-13">جستجو</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-md-5 filter">
+            <form action="{% url 'blog:filter' %}" method="get">
+                <div class="form-group">
+                    <select name="f" class="form-control">
+                        <option>همه دسته بندی ها</option>
+                        {% for category in blog_category %}
+                            <option value="{{ category.title }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info font-13">فیلتر</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if count_searched <= 0 %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p class="text-center font-14 mt-3">برای عنوان جستجو شده نتیجه ای پیدا نشد</p>
+    </div>
+{% endif %}
+
+<!----- Start article boxes ----->
+<div class="container">
+    <div class="row mt-3 mb-5">
+
+        {% for object in object_list %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card custom-card mb-3 shadow-sm">
+
+                    <img src="{{ object.image.url }}" alt="article" class="img-fluid card-img-top">
+
+                    <div class="card-body">
+                        <div class="text-center mb-2 mt-2">
+                            <a href="{{ object.get_absolute_url }}" class="card-link font-14">{{ object.title }}</a>
+                        </div>
+                        <p class="card-text font-13 vazir">
+                            {{ object.body|truncatechars:70 }}
+                        </p>
+                        <span class="bg-light p-2 text-muted font-12 ">
+                            <i class="fa fa-pen ml-1"></i> {{ object.author.get_full_name }}
+                            <i class=" fa fa-eye mx-1"></i> {{ object.view }}
+                        </span>
+                        <a href="{{ object.get_absolute_url }}" class="btn float-left read-more">بیشتر بخوانید</a>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+<!----- End article boxes ----->
+
+<ul class="pagination  justify-content-center mb-5">
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&lsaquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">&lsaquo;</a></li>
+        {% endif %}
+
+        {% for page in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == page %} active {% endif %}">
+                <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">&rsaquo;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><a class="page-link">&rsaquo;</a></li>
+        {% endif %}
+    {% endif %}
+</ul>
+
+<footer class="bg-white"><!----- Start footer ----->
+    <div class="container py-2">
+        <div class="row">
+
+            <div class="col-md-4">
+                <img src="{% static 'images/logo4.jpg' %}" alt="" class="img-fluid">
+                <p class="text-justify font-14 vazir mb-4">
+                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
+                    استفاده از طراحان گرافیک است.
+                    چاپگرها و متون بلکه روزنامه و مجله در ستون و سطر آنچنان که لازم است.
+                </p>
+                <p class="font-14"><i class="fas fa-map-marker-alt text-muted ml-2"></i> ایران , تهران , زعفرانیه ,
+                    ساختمان مهر</p>
+                <p class="font-14"><i class="fas fa-envelope text-muted ml-2"></i> info@sitename.com</p>
+                <p class="font-14"><i class="fa fa-phone text-muted ml-2"></i>021-12345678</p>
+            </div>
+
+            <div class="col-md-2 text-center footer-links">
+                <span class="mt-5 mb-3 d-block font-14">دسترسی سریع</span>
+                <ul class="list-unstyled">
+                    <li class="my-3"><a href="#">درباره ما</a></li>
+                    <li class="my-3"><a href="#">تماس با ما</a></li>
+                    <li class="my-3"><a href="#">سوالات متداول</a></li>
+                    <li class="my-3"><a href="#">تاریخچه سفارشات</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-2 text-center footer-links">
+                <span class="mt-5 mb-3 d-block font-14">لینک های مفید</span>
+                <ul class="list-unstyled">
+                    <li class="my-3"><a href="#">حساب کاربری</a></li>
+                    <li class="my-3"><a href="#">بازپرداخت</a></li>
+                    <li class="my-3"><a href="#">تخفیف</a></li>
+                    <li class="my-3"><a href="#">رهگیری سفارش</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 search-box text-center">
+                <h6 class="my-5">برای اطلاع از تازه ترین ها به خبرنامه ما بپیوندید!</h6>
+                <form action="" method="">
+                    <div class="input-group">
+                        <input type="search" name="" class="form-control rounded-pill"
+                               placeholder="ایمیل خود را وارد کنید ...">
+                        <div class="input-group-append">
+                            <button type="submit" name="" class="btn btn-info rounded-pill font-13">اشتراک</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="mt-5 social-media">
+                    <a href="#"><i class="fab fa-instagram p-1" id="instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter bg-info p-1"></i></a>
+                    <a href="#"><i class="fab fa-youtube bg-danger p-1"></i></a>
+                    <a href="#"><i class="fab fa-telegram bg-primary p-1"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row justify-content-end">
+            <a class="topbutton"> <i class="fa fa-chevron-circle-up"> </i> </a>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <hr>
+                <p class="text-muted font-14">© 1399 کلیه حقوق این سایت متعلق به ایزی لرن است</p>
+            </div>
+        </div>
+
+    </div>
+</footer><!----- End footer ----->
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/myscript.js' %}"></script>
+</body>
+</html>

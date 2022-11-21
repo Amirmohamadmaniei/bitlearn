@@ -1,0 +1,757 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load filters %}
+
+{% block title %}
+    صفحه کاربری
+{% endblock %}
+
+
+{% block content %}
+
+    {% if messages %}
+        <ul class="alert alert-success">
+            {% for message in messages %}
+                <li{% if message.tags %}
+                    class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-lg-3">
+                <div class="card bg-info my-5 p-5">
+                    {% if request.user.is_teacher %}
+                        {% if request.user.profile.image %}
+                            <img src="{{ request.user.profile.image.url }}"
+                                 class="img-fluid rounded-circle d-block mx-auto"
+                                 width="120px" height="120px" alt="user-image" style="width: 120px; height: 120px;">
+                        {% else %}
+                            <img src="{% static 'images/user.png' %}" class="img-fluid rounded-circle d-block mx-auto"
+                                 width="120px" height="120px" alt="user-image">
+                        {% endif %}
+                    {% else %}
+                        <img src="{% static 'images/user.png' %}" class="img-fluid rounded-circle d-block mx-auto"
+                             width="120px" height="120px" alt="user-image">
+                    {% endif %}
+
+
+                    {% if request.user.get_full_name %}
+                        <h5 class="text-white text-center mt-3">کاربر : {{ request.user.get_full_name }} </h5>
+                    {% else %}
+                        <h5 class="text-white text-center mt-3">کاربر : {{ request.user.email }}</h5>
+                    {% endif %}
+
+                </div>
+                <div class="text-right">
+                    <div class="list-group p-0 mb-5 profile">
+
+
+                        {% if request.user.is_teacher %}
+
+                            <a href="#vaziyat" class="active list-group-item list-group-item-action font-14"
+                               data-toggle="list">
+                                <i class="fa fa-cog align-middle ml-2"></i>مرور وضعیت</a>
+
+                            <a href="#created-course" class="list-group-item list-group-item-action" data-toggle="list">
+                                <i class="fa fa-server  align-middle ml-2"></i>دوره هایی که ایجاد کرده اید</a>
+
+                            <a href="#adding-course" class="list-group-item list-group-item-action " data-toggle="list">
+                                <i class="fa fa-plus align-middle ml-2"></i>افزودن دوره</a>
+
+                            <a href="#ticket" class="list-group-item list-group-item-action " data-toggle="list">
+                                <i class="fa fa-tags align-middle ml-2"></i>تیکت ها</a>
+
+                            <a href="#user-change-teacher" class="list-group-item list-group-item-action"
+                               data-toggle="list">
+                                <i class="fa fa-address-card align-middle ml-2"></i>تغییر مشخصات</a>
+
+                            <a href="#teacher-skills" class="list-group-item list-group-item-action"
+                               data-toggle="list">
+                                <i class="fab fa-discourse align-middle ml-2"></i>مهارت ها</a>
+
+                            <a href="{% url 'account:change_password' %}" class="list-group-item list-group-item-action">
+                                <i class=" fa fa-key align-middle ml-2"></i>تغییر کلمه عبور</a>
+
+                            <a href="{% url 'account:Logout' %}" class="list-group-item list-group-item-action">
+                                <i class=" fa fa-window-close align-middle ml-2"></i>خروج</a>
+
+                        {% elif not request.user.is_teacher %}
+
+                            <a href="#vaziyat" class="active list-group-item list-group-item-action font-14"
+                               data-toggle="list">
+                                <i class="fa fa-cog align-middle ml-2"></i>مرور وضعیت </a>
+
+                            <a href="#dore-signup" class="list-group-item list-group-item-action" data-toggle="list">
+                                <i class="fa fa-server  align-middle ml-2"></i>دوره هایی که ثبت نام کرده اید</a>
+
+                            <a href="#shopping-cart" class="list-group-item list-group-item-action " data-toggle="list">
+                                <i class="fa fa-shopping-cart align-middle ml-2"></i>سبد خرید</a>
+
+                            <a href="#ticket" class="list-group-item list-group-item-action " data-toggle="list">
+                                <i class="fa fa-tags align-middle ml-2"></i>تیکت ها</a>
+
+                            <a href="#user-change" class="list-group-item list-group-item-action" data-toggle="list">
+                                <i class="fa fa-address-card align-middle ml-2"></i>تغییر مشخصات</a>
+
+                            <a href="{% url 'account:change_password' %}" class="list-group-item list-group-item-action">
+                                <i class="fa fa-key align-middle ml-2"></i>تغییر کلمه عبور</a>
+
+                            <a href="{% url 'account:Logout' %}" class="list-group-item list-group-item-action">
+                                <i class=" fa fa-window-close align-middle ml-2"></i>خروج</a>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-9">
+
+                <div class="tab-content">
+                    <!----- Start vaziyat ----->
+                    <div class="tab-pane fade show active" id="vaziyat">
+                        <div class="card my-5 pb-4 text-right">
+                            <div class="card-header text-center">
+                                <h6 class="mt-2"> مرور وضعیت </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="card mb-2">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <img src="{% static 'images/university-campus.png' %}"
+                                                     class="img-fluid d-inline-block p-2 rounded bg-warning"
+                                                     alt="courses">
+                                                <div class="d-inline-block text-center">
+                                                    <p class="mb-0"> {{ count_course }} دوره </p>
+                                                    <small> در سایت وجود دارد </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="card mb-2">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <img src="{% static 'images/a.png' %}"
+                                                     class="img-fluid d-inline-block p-2 rounded bg-warning"
+                                                     alt="courses">
+                                                <div class="d-inline-block text-center">
+                                                    {% if request.user.is_teacher %}
+                                                        <p class="mb-0"> {{ request.user.profile.courses.all.count }}
+                                                            دوره </p>
+                                                        <small> ایجاد کرده اید </small>
+                                                    {% else %}
+                                                        <p class="mb-0"> {{ request.user.subscribes.all.count }}
+                                                            دوره </p>
+                                                        <small> ثبت نام کرده اید </small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="card mb-2">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <img src="{% static 'images/shopping-cart.png' %}"
+                                                     class="img-fluid d-inline-block p-2 rounded bg-warning"
+                                                     alt="courses">
+                                                <div class="d-inline-block text-center">
+                                                    {% if request.user.is_teacher %}
+                                                        <p class="mb-0"> {{ course_in_line }}
+                                                            دوره </p>
+                                                        <small> در صف تایید </small>
+                                                    {% else %}
+                                                        <p class="mb-0"> {{ request.user.cart.course.all.count }}
+                                                            دوره </p>
+                                                        <small> در انتظار پرداخت </small>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="card mb-2">
+                                            <div class="card-body d-flex justify-content-between align-items-center">
+                                                <img src="{% static 'images/wallet-filled-money-tool.png' %}"
+                                                     class="img-fluid d-inline-block p-2 rounded bg-warning"
+                                                     alt="courses">
+                                                <div class="d-inline-block text-center">
+                                                    <p class="mb-0"> 0 تومان </p>
+                                                    <small> موجودی قابل تسویه شما </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {#                                    <div class="col-12">#}
+                                    {#                                        <div class="card mt-3">#}
+                                    {#                                            <div class="card-body bg-light">#}
+                                    {#                                                <p class="mb-2"><i class="fa fa-bell align-middle"></i> جدیدترین اعلان#}
+                                    {#                                                    ها </p>#}
+                                    {#                                                <small> در تاریخ 1398/01/25 </small>#}
+                                    {#                                                <div class="alert alert-info mt-3">#}
+                                    {#                                                    <p class="font-13 text-center mt-3">کد تخفیف 30 % : Takhfif</p>#}
+                                    {#                                                </div>#}
+                                    {#                                            </div>#}
+                                    {#                                        </div>#}
+                                    {#                                    </div>#}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End vaziyat ----->
+
+
+                    <!----- Start Created Courses ----->
+                    <div class="tab-pane fade show text-center" id="created-course">
+                        <div class="card my-5 pb-4 text-center">
+                            <div class="card-header">
+                                <h6 class="mt-2 font-14"> دوره هایی که ایجاد کرده اید </h6>
+                            </div>
+                            <div class="card-body">
+
+                                {% if not request.user.profile.courses.all %}
+                                    <small> شما هنوز دوره را نساخته اید </small>
+                                {% else %}
+                                    {% for course in request.user.profile.courses.all %}
+                                        <div class="card mb-3 pb-4 shadow-sm">
+                                            <div class="card-body d-md-flex">
+                                                <img width="250px" height="300px" src="{{ course.image.url }}"
+                                                     class="img-fluid float-lg-right mb-2" alt="html">
+                                                <div class="d-inline-block pr-3 text-justify my-course">
+                                                    {% if course.publish %}
+                                                        <a href="{{ course.get_absolute_url }}"
+                                                           class="mb-3 d-block text-center text-dark">
+                                                            {{ course.title }}
+                                                        </a>
+                                                    {% else %}
+                                                        <span class="mb-3 d-block text-center text-dark">
+                                                            {{ course.title }}
+                                                        </span>
+                                                        <span style="font-size: small;"
+                                                              class="container d-block text-center text-dark alert alert-warning">
+                                                            در صف انتشار
+                                                        </span>
+                                                    {% endif %}
+                                                    <small>
+                                                        {{ course.description|truncatechars:200 }}
+                                                    </small>
+
+                                                    <a href="{{ course.get_absolute_url }}"
+                                                       class="btn btn-primary rounded-pill float-left mt-3 font-12">
+                                                        جزئیات
+                                                    </a>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End Created Courses ----->
+
+
+                    <!----- Start Dore Signup ----->
+                    <div class="tab-pane fade show text-center" id="dore-signup">
+                        <div class="card my-5 pb-4 text-center">
+                            <div class="card-header">
+                                <h6 class="mt-2 font-14"> دوره هایی که ثبت نام کرده اید </h6>
+                            </div>
+                            <div class="card-body">
+
+                                {% if not request.user.subscribes.all %}
+
+                                    <small> شما هنوز دوره ای را خریداری نکرده اید </small>
+
+                                {% else %}
+                                    {% for course in request.user.subscribes.all %}
+                                        <div class="card mb-3 pb-4 shadow-sm">
+                                            <div class="card-body d-md-flex">
+                                                <img width="250px" height="300px" src="{{ course.course.image.url }}"
+                                                     class="img-fluid float-lg-right mb-2" alt="html">
+                                                <div class="d-inline-block pr-3 text-justify my-course">
+                                                    <a href="{{ course.course.get_absolute_url }}"
+                                                       class="mb-3 d-block text-center text-dark">
+                                                        {{ course.course.title }}
+                                                    </a>
+                                                    <small>
+                                                        {{ course.course.description|truncatechars:200 }}
+                                                    </small>
+
+                                                    <button class="btn btn-primary rounded-pill float-left mt-3 font-12"
+                                                            data-toggle="collapse"
+                                                            data-target="#download{{ forloop.counter }}">مشاهده لینک
+                                                        دانلود
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                            <div class="mt-5 collapse" id="download{{ forloop.counter }}">
+                                                <table class="table table-borderless text-right font-13">
+                                                    <tr>
+                                                        <td>آموزش HTML جلسه 1 - 3</td>
+                                                        <td>
+                                                            <button class="btn btn-success float-left font-12"><i
+                                                                    class="fa fa-download align-middle ml-2"></i>دانلود
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End dore signup ----->
+
+
+                    <!----- Start shopping cart----->
+                    <div class="tab-pane fade show text-center" id="shopping-cart">
+
+                        <div class="card my-5 pb-4 text-center">
+
+                            <div class="card-header">
+                                <h6>سبد خرید</h6>
+                            </div>
+
+                            <div class="card-body mt-5">
+                                {% if request.user.cart.course.all %}
+                                    <div class="table-responsive">
+                                        <table id="myTable" class="table">
+                                            <thead>
+                                            <tr id="tr-title">
+                                                <th>عکس</th>
+                                                <th>نام مدرس</th>
+                                                <th>قیمت دوره</th>
+                                                <th>تخفیف</th>
+                                                <th>قیمت پرداختی</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            {% for course in request.user.cart.course.all %}
+                                                <tr id="tr{{ course.pk }}">
+                                                    <td id="td1{{ course.pk }}">
+                                                        <div class="product-img">
+                                                            <div class="img-prdct">
+                                                                <a href="{{ course.get_absolute_url }}">
+                                                                    <img src="{{ course.image.url }}">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td id="td2{{ course.pk }}">
+                                                        <a class="text-dark" href="{{ course.get_absolute_url }}">
+                                                            <p class="my-2">{{ course.title }}</p>
+                                                        </a>
+                                                    </td>
+
+                                                    <td id="td4{{ course.pk }}">
+                                                        <span>{{ course.price|separator }}</span> تومان
+                                                    </td>
+
+                                                    <td id="td5{{ course.pk }}">
+                                                        <span>{{ course.discount }}</span>%
+                                                    </td>
+
+                                                    <td id="td6{{ course.pk }}">
+                                                        <span>{{ course.price_with_discount|separator }}</span> تومان
+                                                    </td>
+
+                                                    <td id="td7{{ course.pk }}">
+                                                        {#                                                        <a href="{% url 'cart:remove' %}?course={{ course.pk }}"#}
+                                                        {#                                                           class="text text-danger">#}
+                                                        {#                                                            <i class="fa fa-trash"></i> حذف#}
+                                                        {#                                                        </a>#}
+
+
+                                                        <a onclick="remove_from_cart('{{ course.pk }}')"
+                                                           style="cursor:pointer;" class="text text-danger">
+                                                            <i class="fa fa-trash"></i> حذف
+                                                        </a>
+
+                                                    </td>
+
+                                                </tr>
+
+                                            {% endfor %}
+
+
+                                            </tbody>
+                                        </table>
+
+                                        <span id="cost" class="font-13">قیمت کل :</span>
+
+                                        {% if request.user.cart.total_price != request.user.cart.total_price_with_discount %}
+
+                                            <span id="gg" class="text-success"><span class="text-muted"
+                                                                                     style="text-decoration: line-through;">{{ request.user.cart.total_price|separator }}</span> / {{ request.user.cart.total_price_with_discount|separator }}</span>
+
+                                        {% else %}
+
+                                            <span id="gg"
+                                                  class="text-success">{{ request.user.cart.total_price_with_discount|separator }}</span>
+
+                                        {% endif %}
+
+                                        <span id="tooman" class="font-13">تومان</span>
+
+                                        <button id="payment" class="btn btn-success btn-block mt-3 font-14"> پرداخت
+                                        </button>
+                                    </div>
+
+                                {% else %}
+
+                                    <small id="gg"> سبد خرید شما خالی است </small>
+
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End shopping cart ----->
+
+
+                    <!----- Start adding course ----->
+                    <div class="tab-pane fade show text-center" id="adding-course">
+
+                        <div class="card my-5">
+
+                            <div class="card-header">
+                                <h6>ایجاد دوره</h6>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="card text-right my-3">
+                                    <div class="card-header bg-primary text-center pb-0 text-white">
+                                        <p class="font-13"> افزودن دوره : </p>
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <form method="post" action="{% url 'course:add_course' %}"
+                                              enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+                                            <div class="row">
+                                                <div class="col form-group">
+                                                    <p> عنوان : </p>
+                                                    {{ form_add_course.title }}
+                                                </div>
+
+                                                <div class="col form-group">
+                                                    <p> سطح دوره : </p>
+                                                    {{ form_add_course.level }}
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> توضیحات : </p>
+                                                {{ form_add_course.description }}
+                                            </div>
+                                            <div class="row">
+                                                <div class="col form-group">
+                                                    <p> قیمت : </p>
+                                                    {{ form_add_course.price }}
+                                                </div>
+
+                                                <div class="col form-group">
+                                                    <p>تخفیف(درصد را وارد کنید):</p>
+                                                    {% render_field form_add_course.discount value=0 min=0 max=100 %}
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="free-checkbox"> دوره رایگان :</label>
+                                                {% render_field form_add_course.free style="width: 25px; height: 25px;" class="mr-1" %}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> دسته بندی : </p>
+                                                {{ form_add_course.category }}
+                                            </div>
+
+
+                                            <div class="custom-file my-4">
+                                                {{ form_add_course.image }}
+                                                <label class="custom-file-label" for="customFile2">انتخاب عکس</label>
+                                            </div>
+
+                                            <div class="custom-file my-4">
+                                                {{ form_add_course.introduction_video }}
+                                                <label class="custom-file-label" for="customFile3">انتخاب فیلم</label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-block my-4 font-13">
+                                                    افزودن
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div class="card-body mt-5">
+                                <div class="table-responsive">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End shopping cart ----->
+
+
+                    <!----- Start ticket ----->
+                    <div class="tab-pane fade show " id="ticket">
+                        <div class="card my-5">
+                            <div class="card-header text-center">
+                                <h6 class="mt-2 font-14"> تیکت های شما </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+
+                                        <form method="post" action="{% url 'home:send_ticket' %}">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="title" class="text-right">عنوان</label>
+                                                {{ form_ticket.subject }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="text">متن پیام</label>
+                                                {{ form_ticket.body }}
+                                            </div>
+
+                                            <button type="submit" class="btn btn-info btn-block font-13">ارسال تیکت
+                                            </button>
+                                        </form>
+
+                                        <p class="font-14 my-5">لیست تیکت های شما :</p>
+
+                                        {% if request.user.tickets.all %}
+
+                                            {% for ticket in request.user.tickets.all %}
+
+                                                <div class="alert alert-success">
+                                                    <p class="font-10 font-weight-bold vazir mt-3">{{ ticket.subject }}</p>
+                                                    <p class="font-14 vazir mt-3">{{ ticket.body|truncatechars:30 }}</p>
+                                                </div>
+
+                                            {% endfor %}
+
+                                        {% else %}
+
+                                            <div class="alert alert-warning">
+                                                <p class="font-13 vazir mt-3">تاکنون تیکتی برای شما ثبت نشده است !</p>
+                                            </div>
+
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End ticket ----->
+
+
+                    <!----- Start user change teacher ----->
+                    <div class="tab-pane fade show text-right" id="user-change-teacher">
+                        <div class="card my-5">
+
+                            <div class="card-header">
+                                <h6 class="mt-2 font-14 text-center"> مشخصات کاربری </h6>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="card text-right my-3">
+                                    <div class="card-header bg-primary text-center pb-0 text-white">
+                                        <p class="font-13"> مشخصات کاربری شما : </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post" action="{% url 'account:edit_profile' %}"
+                                              enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+
+                                            <div class="form-group">
+                                                <p> نام : </p>
+                                                {{ form.fname }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> نام خانوادگی : </p>
+                                                {{ form.lname }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> مقطع تحصیلی : </p>
+                                                {{ form_teacher.grade }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> رشته : </p>
+                                                {{ form_teacher.major }}
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <p> دانشگاه : </p>
+                                                {{ form_teacher.university }}
+                                            </div>
+
+
+                                            <div class="custom-file my-4">
+                                                {{ form_teacher.image }}
+                                                <label class="custom-file-label" for="customFile">انتخاب عکس</label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> توضیحات : </p>
+                                                {{ form_teacher.description }}
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <p> شماره تلفن : </p>
+                                                {% render_field form.phone disabled='disabled' style="cursor:no-drop" %}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> ایمیل : </p>
+                                                {% render_field form.email disabled='disabled' style="cursor:no-drop" %}
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <button onclick="edit_profile()"
+                                                        class="btn btn-primary btn-block my-4 font-13"> ثبت تغییرات
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End user change ----->
+
+
+                    <!----- Start teacher skills ----->
+                    <div class="tab-pane fade show text-right" id="teacher-skills">
+                        <div class="card my-5">
+
+                            <div class="card-header">
+                                <h6 class="mt-2 font-14 text-center"> مشخصات کاربری </h6>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="card text-right my-3">
+                                    <div class="card-header bg-primary text-center pb-0 text-white">
+                                        <p class="font-13"> مهارت های تخصصی شما : </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="{% url 'account:add_skill' %}">
+
+                                            <div class="row">
+                                                <div class="col form-group">
+                                                    {{ form_skill.title }}
+                                                </div>
+
+                                                <div class="col form-group">
+                                                    {{ form_skill.percentage }}
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block my-4 font-13">
+                                                    افزودن
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End teacher skills ----->
+
+
+                    <!----- Start user change ----->
+                    <div class="tab-pane fade show text-right" id="user-change">
+                        <div class="card my-5">
+                            <div class="card-header">
+                                <h6 class="mt-2 font-14 text-center"> مشخصات کاربری </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="card text-right my-3">
+                                    <div class="card-header bg-primary text-center pb-0 text-white">
+                                        <p class="font-13"> مشخصات کاربری شما : </p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post" action="{% url 'account:edit_profile' %}"
+                                              enctype="multipart/form-data">
+                                            {% csrf_token %}
+
+
+                                            <div class="form-group">
+                                                <p> نام : </p>
+                                                {{ form.fname }}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> نام خانوادگی : </p>
+                                                {{ form.lname }}
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <p> شماره تلفن : </p>
+                                                {% render_field form.phone disabled='disabled' style="cursor:no-drop" %}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <p> ایمیل : </p>
+                                                {% render_field form.email disabled='disabled' style="cursor:no-drop" %}
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-block my-4 font-13"> ثبت تغییرات
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!----- End user change ----->
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

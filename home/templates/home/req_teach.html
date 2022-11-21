@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    مدرس شوید
+{% endblock %}
+
+
+{% block content %}
+    <div class="container px-1">
+        <ul class="breadcrumb bg-white mt-4 ">
+            <li class="breadcrumb-item"><a href="{% url 'home:home' %}" class="font-12 vazir">صفحه اصلی</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'home:req_teach' %}" class="pr-2 font-12 vazir">تدریس در ایزی لرن</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="row px-1">
+            <div class="col-md-6 bg-white my-3">
+                <h6 class="mt-3 font-14">ثبت موضوع آموزشی</h6>
+                <p class="vazir font-13 mt-3">لطفا ابتدا بخش‌های قوانین تولید و استانداردهای بیت لرن
+                    را به دقت مطالعه کنید.
+                </p>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="name">نام کامل :</label>
+                        {{ form.full_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="number">تلفن تماس :</label>
+                        {{ form.tel }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">ایمیل :</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course-title">عنوان :</label>
+                        {{ form.title }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">دسته بندی :</label>
+                        {{ form.category }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url">لینک نمونه (اختیاری) : </label>
+                        {{ form.link }}
+                    </div>
+                    <p class="vazir font-12 text-info">لینک نمونه می‌تواند ویدئوی معرفی دوره شما یا هر ویدئوی آموزشی
+                        دیگری باشد که تا به حال ضبط کرد‌ه‌اید.</p>
+
+                    <div class="form-group">
+                        <label for="comment">توضیحات</label>
+                        {{ form.description }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block rounded-pill custom-btn font-13 my-4">ثبت
+                        موضوع آموزشی
+                    </button>
+
+                </form>
+            </div>
+
+
+            <div class="col-md-6 bg-white my-3">
+                <h6 class="mt-3 mb-5 font-14 mr-1 text-primary">استانداردهای بیت لرن برای تولید ویدئوهای آموزشی</h6>
+                <div id="accordion">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="card-link font-14 text-muted" data-toggle="collapse" href="#collapseOne">
+                                <i class="fa fa-plus align-middle ml-2"></i>کیفیت تصویر
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                            <div class="card-body">
+                                <p class="vazir font-13 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
+                                    صنعت چاپ و با استفاده
+                                    از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون
+                                    و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
+                                    هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
+                                    آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
+                                    برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.
+                                    در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها
+                                    و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و
+                                    جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed card-link font-14 text-muted" data-toggle="collapse"
+                               href="#collapseTwo">
+                                <i class="fa fa-plus align-middle ml-2"></i>کیفیت صدا
+                            </a>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <p class="vazir font-13 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
+                                    صنعت چاپ و با استفاده
+                                    از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون
+                                    و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
+                                    هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
+                                    آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
+                                    برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.
+                                    در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها
+                                    و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و
+                                    جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed card-link font-14 text-muted" data-toggle="collapse"
+                               href="#collapseThree">
+                                <i class="fa fa-plus align-middle ml-2"></i>نحوه بیان
+                            </a>
+                        </div>
+                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <p class="vazir font-13 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
+                                    صنعت چاپ و با استفاده
+                                    از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون
+                                    و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
+                                    هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
+                                    آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
+                                    برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.
+                                    در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها
+                                    و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و
+                                    جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed card-link font-14 text-muted" data-toggle="collapse"
+                               href="#collapsefour">
+                                <i class="fa fa-plus align-middle ml-2"></i>ویدیوی معرفی
+                            </a>
+                        </div>
+                        <div id="collapsefour" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <p class="vazir font-13 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
+                                    صنعت چاپ و با استفاده
+                                    از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون
+                                    و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
+                                    هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
+                                    آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
+                                    برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.
+                                    در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها
+                                    و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و
+                                    جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="collapsed card-link font-14 text-muted" data-toggle="collapse"
+                               href="#collapsefive">
+                                <i class="fa fa-plus align-middle ml-2"></i>بخش‌ بندی آموزش
+                            </a>
+                        </div>
+                        <div id="collapsefive" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <p class="vazir font-13 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
+                                    صنعت چاپ و با استفاده
+                                    از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون
+                                    و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با
+                                    هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و
+                                    آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
+                                    برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.
+                                    در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها
+                                    و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و
+                                    جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

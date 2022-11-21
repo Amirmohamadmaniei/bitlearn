@@ -1,0 +1,73 @@
+{% extends 'base_form.html' %}
+
+
+{% block title %}
+    تایید ایمیل
+{% endblock %}
+
+
+{% block content %}
+
+
+    <body>
+    <!----- Start sign up box ----->
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-lg-7 col-xl-6 col-md-9 register">
+
+                <div class="card my-5">
+
+                    <div class="card-body">
+                        <h5 class="shadow-sm text-center mb-4 py-3"> تایید ایمیل </h5>
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            {% if form.errors %}
+                                <div class="alert alert-danger text-center">
+                                    لطفا خطا ها را برطرف کنید
+                                </div>
+                            {% endif %}
+
+
+                            <div class="form-group">
+                                <label for=""> کد تایید : </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend mb-2">
+                                        <span class="input-group-text  my-icon">
+                                            <i class="fa fa-envelope align-middle"></i>
+                                        </span>
+                                    </div>
+
+                                    {{ form.code }}
+
+                                    {% for error in form.code.errors %}
+                                        <div style="font-size: 0.75rem" class="col-12 txt text-danger">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+
+
+                                </div>
+                            </div>
+
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-block rounded-pill custom-btn font-13 mt-4">
+                                تایید ایمیل
+                            </button>
+
+
+                            <p class="text-center my-3  font-12 vazir">هنوز کد را دریافت نکرده اید ؟ <a
+                                    href="{% url 'account:resend_activation_code' %}" class="login">ارسال کد</a></p>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!----- End sign up box ----->
+{% endblock %}

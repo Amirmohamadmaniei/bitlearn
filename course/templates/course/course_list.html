@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block title %}
+    فهرست دوره ها
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container pr-1">
+        <ul class="breadcrumb bg-white mt-4">
+            <li class="breadcrumb-item"><a href="{% url 'home:home' %}" class="font-12 vazir">صفحه اصلی</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course:list' %}" class="pr-2 font-12 vazir">فهرست دوره های
+                آموزشی </a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="row my-4">
+
+            <div class="col-md-3 ">
+
+                <div class="row">
+                    <div class="col-md-12 bg-white shadow-sm mb-3">
+                        <p class="font-13 mt-3">نوع دوره </p>
+                        <hr>
+                        <form action="{% url 'course:list_filter' %}" method="get">
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="True" name="f" type="checkbox"
+                                           class="form-check-input custom-checkbox">رایگان
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="False" name="f" type="checkbox"
+                                           class="form-check-input custom-checkbox">با پرداخت
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="all" name="f" type="checkbox"
+                                           class="form-check-input custom-checkbox">همه
+                                </label>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-secondary wide container">تایید</button>
+
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12 bg-white shadow-sm mb-3">
+                        <p class="font-13 mt-3"> دسته بندی </p>
+                        <hr>
+                        <form method="get" action="{% url 'course:category' %}">
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input name="c" value="web_developer" type="checkbox"
+                                           class="form-check-input custom-checkbox">برنامه نویسی وب
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input name="c" value="mobile_developer" type="checkbox"
+                                           class="form-check-input custom-checkbox">برنامه نویسی موبایل
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input name="c" value="graphics" type="checkbox"
+                                           class="form-check-input custom-checkbox">گرافیک
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input name="c" value="AI" type="checkbox"
+                                           class="form-check-input custom-checkbox">هوش مصنوعی
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-secondary wide container">تایید</button>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 bg-white shadow-sm mb-3">
+                        <p class="font-13 mt-3">مرتب سازی براساس </p>
+                        <hr>
+
+                        <form action="{% url 'course:list_sort' %}">
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input type="radio" value="-created" class="form-check-input custom-checkbox"
+                                           name="s">جدیدترین
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="created" type="radio"
+                                           class="form-check-input custom-checkbox" name="s">قدیمی ترین
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="-videos" type="radio"
+                                           class="form-check-input custom-checkbox" name="s">پر قسمت ترین
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="-price" type="radio"
+                                           class="form-check-input custom-checkbox" name="s">گران ترین
+                                </label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <label class="form-check-label">
+                                    <input value="price" type="radio"
+                                           class="form-check-input custom-checkbox" name="s">ارزان ترین
+                                </label>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-secondary wide container">تایید</button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+                {#                <div class="row"><!----- Start course title ----->#}
+                {#                    <div class="col-md-12 bg-white shadow-sm">#}
+                {#                        <p class="font-13 mt-3">سرفصل ها </p>#}
+                {#                        <hr>#}
+                {##}
+                {#                        <div class="form-check mb-2">#}
+                {#                            <label class="form-check-label">#}
+                {#                                <input type="checkbox" class="form-check-input custom-checkbox" value="">HTML#}
+                {#                            </label>#}
+                {#                        </div>#}
+                {##}
+                {#                        <div class="form-check mb-2">#}
+                {#                            <label class="form-check-label">#}
+                {#                                <input type="checkbox" class="form-check-input custom-checkbox" value="">Css#}
+                {#                            </label>#}
+                {#                        </div>#}
+                {##}
+                {#                        <div class="form-check mb-2">#}
+                {#                            <label class="form-check-label">#}
+                {#                                <input type="checkbox" class="form-check-input custom-checkbox" value="">Bootstrap#}
+                {#                            </label>#}
+                {#                        </div>#}
+                {##}
+                {#                        <div class="form-check mb-2">#}
+                {#                            <label class="form-check-label">#}
+                {#                                <input type="checkbox" class="form-check-input custom-checkbox" value="">VUE X#}
+                {#                            </label>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div><!----- End course title ----->#}
+            </div>
+
+
+            <div class="col-md-9">
+                <div class="row">
+
+                    {% for object in object_list %}
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="card custom-card mb-3">
+                                <div class="sub-layer">
+                                    <img src="{{ object.image.url }}" alt="bootstrap"
+                                         class="img-fluid card-img-top">
+                                    <div class="over-layer">
+                                        <a href="{{ object.get_absolute_url }}" class="btn btn-primary"> مشاهده و
+                                            خرید </a>
+                                        <span class="badge badge-secondary badge-pill"> 50 <i
+                                                class="fa fa-shopping-basket pr-1"></i></span>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <a href="{{ object.get_absolute_url }}" class="card-link">{{ object.title }}</a>
+                                    <p class="text-justify card-text vazir font-14 mt-3">
+                                        {{ object.description|truncatechars:80 }}
+                                    </p>
+                                </div>
+                                <div class="card-footer">
+                                    {% if object.free or object.price_with_discount == 0 %}
+                                        <div class="float-left">
+                                            <small class="text-success mr-2">رایگان</small>
+                                        </div>
+                                    {% else %}
+                                        {% if object.discount %}
+                                            <span class="badge badge-primary badge-pill pt-1">{{ object.discount }}%</span>
+                                            <div class="float-left">
+                                                <del class="text-muted font-13">{{ object.price|separator }} تومان</del>
+                                                <small class="text-success mr-2">{{ object.price_with_discount|separator }}
+                                                    تومان</small>
+                                            </div>
+                                        {% else %}
+                                            <div class="float-left">
+                                                <small class="text-success mr-2">{{ object.price|separator }}
+                                                    تومان</small>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <ul class="pagination  justify-content-center mb-5">
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&lsaquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">&lsaquo;</a></li>
+            {% endif %}
+
+            {% for page in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == page %} active {% endif %}">
+                    <a href="?page={{ page }}&{{ request.GET.urlencode }}" class="page-link">{{ page }}</a></li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">&rsaquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">&rsaquo;</a></li>
+            {% endif %}
+        {% endif %}
+    </ul>
+
+{% endblock %}

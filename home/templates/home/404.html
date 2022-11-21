@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap/bootstrap-rtl.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome/css/all.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/customcss/style.css' %}">
+</head>
+<body class="bg-white">
+   
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 error text-center">
+            <h3 class=" mt-5 text-white">صفحه مورد نظر یافت نشد !</h3>
+            <a href="{% url 'home:home' %}" class="btn btn-info btn-sm rounded-pill mt-4 px-3">بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+</div>
+
+
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/myscript.js' %}"></script>
+</body>
+</html>
