@@ -73,7 +73,8 @@
                                data-toggle="list">
                                 <i class="fab fa-discourse align-middle ml-2"></i>مهارت ها</a>
 
-                            <a href="{% url 'account:change_password' %}" class="list-group-item list-group-item-action">
+                            <a href="{% url 'account:change_password' %}"
+                               class="list-group-item list-group-item-action">
                                 <i class=" fa fa-key align-middle ml-2"></i>تغییر کلمه عبور</a>
 
                             <a href="{% url 'account:Logout' %}" class="list-group-item list-group-item-action">
@@ -97,7 +98,8 @@
                             <a href="#user-change" class="list-group-item list-group-item-action" data-toggle="list">
                                 <i class="fa fa-address-card align-middle ml-2"></i>تغییر مشخصات</a>
 
-                            <a href="{% url 'account:change_password' %}" class="list-group-item list-group-item-action">
+                            <a href="{% url 'account:change_password' %}"
+                               class="list-group-item list-group-item-action">
                                 <i class="fa fa-key align-middle ml-2"></i>تغییر کلمه عبور</a>
 
                             <a href="{% url 'account:Logout' %}" class="list-group-item list-group-item-action">
@@ -329,6 +331,7 @@
 
                             <div class="card-body mt-5">
                                 {% if request.user.cart.course.all %}
+                                    <form method="get" action="{% url 'payment:request' %}">
                                     <div class="table-responsive">
                                         <table id="myTable" class="table">
                                             <thead>
@@ -414,6 +417,8 @@
                                         <button id="payment" class="btn btn-success btn-block mt-3 font-14"> پرداخت
                                         </button>
                                     </div>
+
+                                    </form>
 
                                 {% else %}
 

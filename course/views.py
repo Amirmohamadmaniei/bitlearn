@@ -71,6 +71,7 @@ class CourseDetail(DetailView):
         context['form_headline'] = HeadlineForm()
         context['form_video'] = VideoForm()
         context['form_comment'] = CommentForm()
+        context['suggest_course'] = Course.objects.filter(publish=True).order_by('?')[0:3]
         if self.request.user.is_authenticated:
             context['is_subscribe'] = Subscribe.objects.filter(course=self.object, student=self.request.user)
         return context

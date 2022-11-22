@@ -4,9 +4,9 @@ from course.choices import category_choices
 
 
 class Ticket(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='tickets')
-    subject = models.CharField(max_length=50)
-    body = models.TextField()
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='tickets', verbose_name='کاربر')
+    subject = models.CharField(max_length=50, verbose_name='موضوع')
+    body = models.TextField(verbose_name='پیام')
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -19,13 +19,13 @@ class Ticket(models.Model):
 
 
 class Teach(models.Model):
-    full_name = models.CharField(max_length=120)
-    tel = models.CharField(max_length=11)
-    email = models.EmailField()
-    title = models.CharField(max_length=80)
-    category = models.CharField(max_length=20, choices=category_choices)
-    link = models.URLField(max_length=120)
-    description = models.TextField()
+    full_name = models.CharField(max_length=120, verbose_name='نام کامل')
+    tel = models.CharField(max_length=11, verbose_name='تلفن')
+    email = models.EmailField(verbose_name='ایمیل')
+    title = models.CharField(max_length=80, verbose_name='عنوان')
+    category = models.CharField(max_length=20, choices=category_choices, verbose_name='دسته بندی')
+    link = models.URLField(max_length=120, verbose_name='لینک ویدئو')
+    description = models.TextField(verbose_name='توضیحات')
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -38,9 +38,9 @@ class Teach(models.Model):
 
 
 class ContactUs(models.Model):
-    full_name = models.CharField(max_length=120)
-    email = models.EmailField()
-    body = models.TextField()
+    full_name = models.CharField(max_length=120, verbose_name='نام کامل')
+    email = models.EmailField(verbose_name='ایمیل')
+    body = models.TextField(verbose_name='پیام')
 
     created = models.DateTimeField(auto_now_add=True)
 

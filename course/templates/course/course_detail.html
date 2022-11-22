@@ -12,8 +12,10 @@
     <div class="container">
         <ul class="breadcrumb bg-white mt-4 ">
             <li class="breadcrumb-item"><a href="{% url 'home:home' %}" class="font-12 vazir">صفحه اصلی</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'course:list' %}" class="pr-2 font-12 vazir">فهرست دوره ها </a></li>
-            <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}" class="pr-2 font-12 vazir">{{ object.title }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course:list' %}" class="pr-2 font-12 vazir">فهرست دوره ها </a>
+            </li>
+            <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}"
+                                           class="pr-2 font-12 vazir">{{ object.title }}</a></li>
         </ul>
     </div>
 
@@ -21,7 +23,7 @@
         <div class="row">
 
             <div class="col-md-4 mb-3">
-                <img style="width: 300px; height: 200px;" src="{{ object.image.url }}" class="img-fluid" alt="HTML">
+                <img src="{{ object.image.url }}" class="img-fluid" alt="HTML">
                 <ul class="list-group text-center list-group-flush custom-list-group">
                     <li id="gg" class="list-group-item font-13">عنوان دوره : {{ object.title }} </li>
                     <li class="list-group-item font-13">مدرس : {{ object.teacher.user.get_full_name }}</li>
@@ -438,89 +440,48 @@
     <div class="container">
         <div class="row my-3">
 
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card custom-card mb-3">
-                    <div class="sub-layer">
-                        <img src="{% static 'images/bootstrap.jpg' %}" alt="bootstrap" class="img-fluid card-img-top">
-                        <div class="over-layer">
-                            <a href="course.html" class="btn btn-primary"> مشاهده و خرید </a>
-                            <span class="badge badge-secondary badge-pill"> 50 <i
-                                    class="fa fa-shopping-basket pr-1"></i></span>
+            {% for course in suggest_course %}
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card custom-card mb-3">
+                        <div class="sub-layer">
+                            <img src="{{ course.image.url }}" alt="bootstrap"
+                                 class="img-fluid card-img-top">
+                            <div class="over-layer">
+                                <a href="{{ course.get_absolute_url }}" class="btn btn-primary"> مشاهده و خرید </a>
+                                <span class="badge badge-secondary badge-pill"> 50 <i
+                                        class="fa fa-shopping-basket pr-1"></i></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <a href="course.html" class="card-link">آموزش جامع Bootstrap 4</a>
-                        <p class="text-justify card-text vazir font-14 mt-3">
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه
-                            روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="badge badge-primary badge-pill pt-1">60%</span>
-                        <div class="float-left">
-                            <del class="text-muted font-13">120.000 تومان</del>
-                            <small class="text-success mr-2">75.000 تومان</small>
+                        <div class="card-body">
+                            <a href="{{ course.get_absolute_url }}" class="card-link">{{ course.title }}</a>
+                            <p class="text-justify card-text vazir font-14 mt-3">
+                                {{ course.description|truncatechars:70 }}
+                            </p>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card custom-card mb-3">
-                    <div class="sub-layer">
-                        <img src="{% static 'images/vuex1.jpg' %}" alt="VUE X" class="img-fluid card-img-top">
-                        <div class="over-layer">
-                            <a href="course.html" class="btn btn-primary"> مشاهده و خرید </a>
-                            <span class="badge badge-secondary badge-pill"> 50 <i
-                                    class="fa fa-shopping-basket pr-1"></i></span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <a href="course.html" class="card-link">آموزش VUE X</a>
-                        <p class="text-justify card-text vazir font-14 mt-3">
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه
-                            روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="badge badge-primary badge-pill pt-1">60%</span>
-                        <div class="float-left">
-                            <del class="text-muted font-13">120.000 تومان</del>
-                            <small class="text-success mr-2">75.000 تومان</small>
+                        <div class="card-footer">
+                            {% if object.free or object.price_with_discount == 0 %}
+                                <div class="float-left">
+                                    <small class="text-success mr-2">رایگان</small>
+                                </div>
+                            {% else %}
+                                {% if object.discount %}
+                                    <span class="badge badge-primary badge-pill pt-1">{{ object.discount }}%</span>
+                                    <div class="float-left">
+                                        <del class="text-muted font-13">{{ object.price|separator }} تومان</del>
+                                        <small class="text-success mr-2">{{ object.price_with_discount|separator }}
+                                            تومان</small>
+                                    </div>
+                                {% else %}
+                                    <div class="float-left">
+                                        <small class="text-success mr-2">{{ object.price|separator }}
+                                            تومان</small>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="card custom-card mb-3">
-                    <div class="sub-layer">
-                        <img src="{% static 'images/flutter-1.png' %}" alt="Flutter" class="img-fluid card-img-top">
-                        <div class="over-layer">
-                            <a href="course.html" class="btn btn-primary"> مشاهده و خرید </a>
-                            <span class="badge badge-secondary badge-pill"> 50 <i
-                                    class="fa fa-shopping-basket pr-1"></i></span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <a href="course.html" class="card-link">آموزش Flutter</a>
-                        <p class="text-justify card-text vazir font-14 mt-3">
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه
-                            روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="badge badge-primary badge-pill pt-1">60%</span>
-                        <div class="float-left">
-                            <del class="text-muted font-13">120.000 تومان</del>
-                            <small class="text-success mr-2">75.000 تومان</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
 
         </div>
     </div>

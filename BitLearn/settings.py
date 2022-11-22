@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
+    "admin_persian",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     # default apps
     'django_cleanup.apps.CleanupConfig',
     'widget_tweaks',
+    'zeep',
 
     # my apps
     'home.apps.HomeConfig',
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
     'course.apps.CourseConfig',
     'cart.apps.CartConfig',
     'blog.apps.BlogConfig',
+    'payment.apps.PaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'blog.middleware.IPAddressMiddleware',
 ]
 
 ROOT_URLCONF = 'BitLearn.urls'

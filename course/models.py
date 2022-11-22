@@ -21,11 +21,11 @@ class Course(models.Model):
                               help_text='سایز عکس 600 در 300 باشد')
 
     status = models.CharField(max_length=20, choices=status_choices, default=0, verbose_name='وضعیت دوره')
-    free = models.BooleanField(default=False)
-    category = models.CharField(max_length=20, choices=category_choices)
+    free = models.BooleanField(default=False, verbose_name='رایگان')
+    category = models.CharField(max_length=20, choices=category_choices, verbose_name='دسته بندی')
     publish = models.BooleanField(default=False, verbose_name='انتشار')
 
-    slug = models.SlugField(blank=True, allow_unicode=True)
+    slug = models.SlugField(blank=True, allow_unicode=True, verbose_name='اسلاگ', help_text='دست نزنید')
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -78,8 +78,8 @@ class Course(models.Model):
 
 
 class Headline(models.Model):
-    title = models.CharField(max_length=250)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='headlines')
+    title = models.CharField(max_length=250, verbose_name='عنوان سر فصل')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='headlines', verbose_name='دوره')
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -91,10 +91,10 @@ class Headline(models.Model):
 
 
 class Video(models.Model):
-    title = models.CharField(max_length=150)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='videos')
-    headline = models.ForeignKey(Headline, on_delete=models.CASCADE, related_name='videos')
-    video = models.FileField(upload_to='course/video')
+    title = models.CharField(max_length=150, verbose_name='عنوان ویدئو')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='videos', verbose_name='دوره')
+    headline = models.ForeignKey(Headline, on_delete=models.CASCADE, related_name='videos', verbose_name='سرفصل')
+    video = models.FileField(upload_to='course/video', verbose_name='فایل ویدئو')
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -107,8 +107,8 @@ class Video(models.Model):
 
 
 class Subscribe(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscribes')
-    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscribes')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subscribes', verbose_name='دوره')
+    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscribes', verbose_name='کاربر')
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -117,15 +117,16 @@ class Subscribe(models.Model):
 
     class Meta:
         verbose_name = 'اشتراک'
-        verbose_name_plural = 'اشتراک ه'
+        verbose_name_plural = 'اشتراک ها'
 
 
 class Comment(models.Model):
-    full_name = models.CharField(max_length=120, null=True, blank=True)
-    email = models.EmailField()
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='comments')
-    text = models.TextField()
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    full_name = models.CharField(max_length=120, null=True, blank=True, verbose_name='نام کامل')
+    email = models.EmailField(verbose_name='ایمیل')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='comments', verbose_name='دوره')
+    text = models.TextField(verbose_name='متن نظر')
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies',
+                               verbose_name='کامنت والد')
 
     created = models.DateTimeField(auto_now_add=True)
 

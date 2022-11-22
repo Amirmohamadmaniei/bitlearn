@@ -4,10 +4,10 @@ from course.models import Course
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='cart')
-    course = models.ManyToManyField(Course)
-    total_price = models.IntegerField(default=0)
-    total_price_with_discount = models.IntegerField(default=0)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='cart', verbose_name='کاربر')
+    course = models.ManyToManyField(Course, verbose_name='دوره')
+    total_price = models.IntegerField(default=0, verbose_name='جمع قیمت')
+    total_price_with_discount = models.IntegerField(default=0, verbose_name='جمع قیمت(با احتساب تخفیف)')
 
     created = models.DateTimeField(auto_now_add=True)
 

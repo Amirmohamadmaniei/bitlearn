@@ -20,6 +20,7 @@ from django.urls import path, include
 
 from BitLearn import settings
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
@@ -27,6 +28,7 @@ urlpatterns = [
     path('course/', include('course.urls')),
     path('cart/', include('cart.urls')),
     path('blog/', include('blog.urls')),
+    path('payment/', include('payment.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'home.views.error_404'

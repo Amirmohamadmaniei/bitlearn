@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, ListView
@@ -14,6 +14,12 @@ class BlogDetail(DetailView):
         context = super(BlogDetail, self).get_context_data(**kwargs)
         context['form_comment'] = CommentBlogForm()
         context['another_blog'] = Blog.objects.filter().order_by('?')[0:3]
+
+        ip_address = self.request.user.ip_address
+
+        if ip_address not in self.object.view.all():
+            self.object.view.add(ip_address)
+
         return context
 
 

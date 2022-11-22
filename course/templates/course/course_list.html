@@ -192,8 +192,8 @@
                                     <div class="over-layer">
                                         <a href="{{ object.get_absolute_url }}" class="btn btn-primary"> مشاهده و
                                             خرید </a>
-                                        <span class="badge badge-secondary badge-pill"> 50 <i
-                                                class="fa fa-shopping-basket pr-1"></i></span>
+                                        <span class="badge badge-secondary badge-pill">  <i
+                                                class="fa fa-cart-plus {% if object in request.user.cart.course.all %} text-success {% else %} {% endif %} pr-1"></i></span>
                                     </div>
                                 </div>
                                 <div class="card-body">

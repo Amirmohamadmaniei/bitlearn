@@ -14,8 +14,8 @@ class CustomUserAdmin(BaseUserAdmin):
     add_form = CustomUserCreationForm
     inlines = (ProfileInline,)
 
-    list_display = ('email', 'phone', 'is_admin')
-    list_filter = ('is_admin',)
+    list_display = ('email', 'phone', 'is_admin', 'is_teacher', 'is_active')
+    list_filter = ('is_admin', 'is_teacher', 'is_active')
     fieldsets = (
         ('اطلاعات حساب کاربری', {'fields': ('email', 'phone', 'password')}),
         ('اطلاعات شخصی', {'fields': ('fname', 'lname',)}),
@@ -28,9 +28,10 @@ class CustomUserAdmin(BaseUserAdmin):
         ('دسترسی ها', {'fields': ('is_active', 'is_admin', 'is_teacher')}),
     )
 
-    search_fields = ('email',)
-    ordering = ('email',)
+    search_fields = ('email', 'phone', 'full_name')
+    ordering = ('email', 'is_admin', 'is_teacher', 'is_active')
     filter_horizontal = ()
+    search_help_text = 'جستجو در ایمیل ، شماره تلفن ، نام'
 
 
 class OTPAdmin(BaseUserAdmin):
@@ -50,7 +51,19 @@ class OTPAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    list_filter = ('grade', )
+    search_fields = ('user',)
+
+
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ('user', 'title')
+    search_fields = ('user',)
+
+
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(OTP, OTPAdmin)
-admin.site.register(Skill)
+admin.site.register(Skill, SkillAdmin)
+admin.site.register(Profile, ProfileAdmin)
 admin.site.unregister(Group)

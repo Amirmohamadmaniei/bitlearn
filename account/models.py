@@ -79,14 +79,13 @@ class OTP(models.Model):
         verbose_name_plural = 'کد های اعتبار سنجی'
 
 
-
 class Profile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
-    description = models.TextField()
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile', verbose_name='مدرس')
+    description = models.TextField(verbose_name='بیوگرافی')
     image = models.ImageField(upload_to='photo/teacher', null=True, blank=True, verbose_name='عکس پروفایل')
-    grade = models.CharField(max_length=30)
-    major = models.CharField(max_length=30)
-    university = models.CharField(max_length=80)
+    grade = models.CharField(max_length=30, verbose_name='مدرک تحصیلی')
+    major = models.CharField(max_length=30, verbose_name='رشته تحصیلی')
+    university = models.CharField(max_length=80, verbose_name='دانشگاه')
 
     def __str__(self):
         return self.user.email
@@ -97,9 +96,9 @@ class Profile(models.Model):
 
 
 class Skill(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skills')
-    title = models.CharField(max_length=50)
-    percentage = models.IntegerField()
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='skills', verbose_name='مدرس')
+    title = models.CharField(max_length=50, verbose_name='عنوان')
+    percentage = models.IntegerField(verbose_name='میزان درصد')
 
     def __str__(self):
         return self.title
