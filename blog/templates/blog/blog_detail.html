@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load jalali_tags %}
 
 {% block title %}
     {{ object.title|truncatechars:20 }}
@@ -32,8 +33,8 @@
                 <h1 class="pr-3 my-4">{{ object.title }}</h1>
                 <div class="mb-5">
                     <span class="text-muted pr-3 font-12"><i
-                            class="fa fa-pen ml-2"></i> {{ object.author.get_full_name }}</span>
-                    <span class="text-muted pr-3 font-12"><i class="fa fa-calendar ml-2"></i> 1398/10/8</span>
+                            class="fa fa-pen ml-2"></i> بب</span>
+                    <span class="text-muted pr-3 font-12"><i class="fa fa-calendar ml-2"></i>{{ blog.created.time }} - {{ blog.created.date|to_jalali }}</span>
                     <span class="text-muted pr-3 font-12"><i class="fa fa-eye ml-2"></i> {{ object.view.all.count }}</span>
                     <span class="text-muted pr-3 font-12">دسته بندی : {{ object.category.title }}</span>
                 </div>
@@ -122,7 +123,7 @@
                         <p class="text-danger mb-0 vazir font-13">
                             {% if comment.full_name %}
                                 {{ comment.full_name }}{% else %}ناشناس{% endif %}</p>
-                        <small class="mx-5 text-muted">15 تیر 1398</small>
+                        <small class="mx-5 text-muted">{{ comment.created.time }} - {{ comment.created.date|to_jalali }}</small>
                         {% if object.author == request.user %}
                             <a style="cursor: pointer" id="reply" class="mx-3 text-muted"
                                onclick="reply('{{ comment.pk }}')"><i
@@ -138,7 +139,7 @@
                             <p class="text-danger mb-0 vazir font-13">
                                 {% if reply.full_name %}
                                     {{ reply.full_name }}{% else %}ناشناس{% endif %}</p>
-                            <small class="mx-5 text-muted">15 تیر 1398</small>
+                            <small class="mx-5 text-muted">{{ reply.created.time }} - {{ reply.created.date|to_jalali }}</small>
                         </div>
                         <p class="text-justify my-2 vazir font-13">
                             {{ reply.text }}
@@ -178,8 +179,8 @@
                             {{ blog.body|truncatechars:70 }}
                         </p>
                         <span class="bg-light p-2 text-muted font-12 ">
-                            <i class="fa fa-pen ml-1"></i> ادمین
-                            <i class=" fa fa-eye mx-1"></i>140
+                            <i class="fa fa-pen ml-1"></i> {{ blog.author.get_full_name }}
+                            <i class=" fa fa-eye mx-1"></i> {{ blog.view.all.count }}
                         </span>
                         <a href="{{ blog.get_absolute_url }}" class="btn float-left read-more">بیشتر بخوانید</a>
                     </div>

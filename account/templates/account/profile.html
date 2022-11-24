@@ -11,13 +11,13 @@
 {% block content %}
 
     {% if messages %}
-        <ul class="alert alert-success">
-            {% for message in messages %}
-                <li{% if message.tags %}
-                    class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+        {% for msg in messages %}
+            <ul class="alert alert-{{ msg.tags }}">
+                <li>{{ msg }}</li>
+            </ul>
+        {% endfor %}
     {% endif %}
+
 
     <div class="container">
         <div class="row">
@@ -332,91 +332,92 @@
                             <div class="card-body mt-5">
                                 {% if request.user.cart.course.all %}
                                     <form method="get" action="{% url 'payment:request' %}">
-                                    <div class="table-responsive">
-                                        <table id="myTable" class="table">
-                                            <thead>
-                                            <tr id="tr-title">
-                                                <th>عکس</th>
-                                                <th>نام مدرس</th>
-                                                <th>قیمت دوره</th>
-                                                <th>تخفیف</th>
-                                                <th>قیمت پرداختی</th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            {% for course in request.user.cart.course.all %}
-                                                <tr id="tr{{ course.pk }}">
-                                                    <td id="td1{{ course.pk }}">
-                                                        <div class="product-img">
-                                                            <div class="img-prdct">
-                                                                <a href="{{ course.get_absolute_url }}">
-                                                                    <img src="{{ course.image.url }}">
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-                                                    <td id="td2{{ course.pk }}">
-                                                        <a class="text-dark" href="{{ course.get_absolute_url }}">
-                                                            <p class="my-2">{{ course.title }}</p>
-                                                        </a>
-                                                    </td>
-
-                                                    <td id="td4{{ course.pk }}">
-                                                        <span>{{ course.price|separator }}</span> تومان
-                                                    </td>
-
-                                                    <td id="td5{{ course.pk }}">
-                                                        <span>{{ course.discount }}</span>%
-                                                    </td>
-
-                                                    <td id="td6{{ course.pk }}">
-                                                        <span>{{ course.price_with_discount|separator }}</span> تومان
-                                                    </td>
-
-                                                    <td id="td7{{ course.pk }}">
-                                                        {#                                                        <a href="{% url 'cart:remove' %}?course={{ course.pk }}"#}
-                                                        {#                                                           class="text text-danger">#}
-                                                        {#                                                            <i class="fa fa-trash"></i> حذف#}
-                                                        {#                                                        </a>#}
-
-
-                                                        <a onclick="remove_from_cart('{{ course.pk }}')"
-                                                           style="cursor:pointer;" class="text text-danger">
-                                                            <i class="fa fa-trash"></i> حذف
-                                                        </a>
-
-                                                    </td>
-
+                                        <div class="table-responsive">
+                                            <table id="myTable" class="table">
+                                                <thead>
+                                                <tr id="tr-title">
+                                                    <th>عکس</th>
+                                                    <th>نام مدرس</th>
+                                                    <th>قیمت دوره</th>
+                                                    <th>تخفیف</th>
+                                                    <th>قیمت پرداختی</th>
+                                                    <th></th>
                                                 </tr>
+                                                </thead>
+                                                <tbody>
 
-                                            {% endfor %}
+                                                {% for course in request.user.cart.course.all %}
+                                                    <tr id="tr{{ course.pk }}">
+                                                        <td id="td1{{ course.pk }}">
+                                                            <div class="product-img">
+                                                                <div class="img-prdct">
+                                                                    <a href="{{ course.get_absolute_url }}">
+                                                                        <img src="{{ course.image.url }}">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td id="td2{{ course.pk }}">
+                                                            <a class="text-dark" href="{{ course.get_absolute_url }}">
+                                                                <p class="my-2">{{ course.title }}</p>
+                                                            </a>
+                                                        </td>
+
+                                                        <td id="td4{{ course.pk }}">
+                                                            <span>{{ course.price|separator }}</span> تومان
+                                                        </td>
+
+                                                        <td id="td5{{ course.pk }}">
+                                                            <span>{{ course.discount }}</span>%
+                                                        </td>
+
+                                                        <td id="td6{{ course.pk }}">
+                                                            <span>{{ course.price_with_discount|separator }}</span>
+                                                            تومان
+                                                        </td>
+
+                                                        <td id="td7{{ course.pk }}">
+                                                            {#                                                        <a href="{% url 'cart:remove' %}?course={{ course.pk }}"#}
+                                                            {#                                                           class="text text-danger">#}
+                                                            {#                                                            <i class="fa fa-trash"></i> حذف#}
+                                                            {#                                                        </a>#}
 
 
-                                            </tbody>
-                                        </table>
+                                                            <a onclick="remove_from_cart('{{ course.pk }}')"
+                                                               style="cursor:pointer;" class="text text-danger">
+                                                                <i class="fa fa-trash"></i> حذف
+                                                            </a>
 
-                                        <span id="cost" class="font-13">قیمت کل :</span>
+                                                        </td>
 
-                                        {% if request.user.cart.total_price != request.user.cart.total_price_with_discount %}
+                                                    </tr>
 
-                                            <span id="gg" class="text-success"><span class="text-muted"
-                                                                                     style="text-decoration: line-through;">{{ request.user.cart.total_price|separator }}</span> / {{ request.user.cart.total_price_with_discount|separator }}</span>
+                                                {% endfor %}
 
-                                        {% else %}
 
-                                            <span id="gg"
-                                                  class="text-success">{{ request.user.cart.total_price_with_discount|separator }}</span>
+                                                </tbody>
+                                            </table>
 
-                                        {% endif %}
+                                            <span id="cost" class="font-13">قیمت کل :</span>
 
-                                        <span id="tooman" class="font-13">تومان</span>
+                                            {% if request.user.cart.total_price != request.user.cart.total_price_with_discount %}
 
-                                        <button id="payment" class="btn btn-success btn-block mt-3 font-14"> پرداخت
-                                        </button>
-                                    </div>
+                                                <span id="gg" class="text-success"><span class="text-muted"
+                                                                                         style="text-decoration: line-through;">{{ request.user.cart.total_price|separator }}</span> / {{ request.user.cart.total_price_with_discount|separator }}</span>
+
+                                            {% else %}
+
+                                                <span id="gg"
+                                                      class="text-success">{{ request.user.cart.total_price_with_discount|separator }}</span>
+
+                                            {% endif %}
+
+                                            <span id="tooman" class="font-13">تومان</span>
+
+                                            <button id="payment" class="btn btn-success btn-block mt-3 font-14"> پرداخت
+                                            </button>
+                                        </div>
 
                                     </form>
 

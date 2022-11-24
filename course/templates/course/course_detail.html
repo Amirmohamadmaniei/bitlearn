@@ -2,6 +2,8 @@
 {% load widget_tweaks %}
 {% load filters %}
 {% load static %}
+{% load jalali_tags %}
+
 
 {% block title %}
     {{ object.title|truncatechars:25 }}
@@ -347,7 +349,7 @@
                                                 <p class="text-danger mb-0 mr-2 vazir font-13">
                                                     {% if comment.full_name %}
                                                         {{ comment.full_name }}{% else %}ناشناس{% endif %}</p>
-                                                <small class="mx-5 text-muted">15 تیر 1398</small>
+                                                <small class="mx-5 text-muted">{{ comment.created.time }} - {{ comment.created.date|to_jalali }}</small>
                                                 {% if object.teacher.user == request.user %}
                                                     <a style="cursor: pointer" id="reply" class="mx-3 text-muted"
                                                        onclick="reply('{{ comment.pk }}')"><i
@@ -364,7 +366,7 @@
                                                     <p class="text-danger mb-0 vazir font-13">
                                                         {% if reply.full_name %}
                                                             {{ reply.full_name }}{% else %}ناشناس{% endif %}</p>
-                                                    <small class="mx-5 text-muted">15 تیر 1398</small>
+                                                    <small class="mx-5 text-muted">{{ reply.created.time }} - {{ reply.created.date|to_jalali }}</small>
                                                 </div>
                                                 <p class="text-justify my-2 mr-2 vazir font-13">
                                                     {{ reply.text }}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'widget_tweaks',
     'zeep',
+    'jalali_date',
 
     # my apps
     'home.apps.HomeConfig',
@@ -154,4 +155,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'bitlearning0@gmail.com'
-EMAIL_HOST_PASSWORD = 'jnqjiehlxozjhooy'
+EMAIL_HOST_PASSWORD = 'kjozdkfklfmrafds'

@@ -93,7 +93,7 @@ class AddCourse(IsTeacher, View):
                                   image=cd.get('image'),
                                   free=cd.get('free'),
                                   category=cd.get('category'))
-            messages.success(request, 'دوره با موفقیت اضافه شد ، بعد از تایید منتشر خواهد شد')
+            messages.success(request, 'دوره با موفقیت اضافه شد ، بعد از تایید منتشر خواهد شد', extra_tags='success')
         return redirect(reverse('account:profile'))
 
 

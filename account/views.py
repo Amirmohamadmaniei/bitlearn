@@ -30,7 +30,10 @@ class Register(NoLoginRequiredMixin, FormView):
         user.set_password(password)
         user.save()
         self.request.session['user_email'] = email
-        send_email(user, email)
+        try:
+            send_email(user, email)
+        except:
+            pass
 
         return super(Register, self).form_valid(form)
 
@@ -107,7 +110,10 @@ class Login(NoLoginRequiredMixin, View):
                     email = CustomUser.object.get(phone=username).email
                 user = CustomUser.object.get(email=email)
                 request.session['user_email'] = email
-                send_email(user, email)
+                try:
+                    send_email(user, email)
+                except:
+                    pass
                 return redirect(reverse('account:active_account'))
             login(request, user)
 
@@ -255,7 +261,7 @@ class EditProfile(LoginRequiredMixin, View):
             if form.is_valid():
                 form.save()
 
-        messages.success(request, 'پروفایل بروزرسانی شد')
+        messages.success(request, 'پروفایل بروزرسانی شد', extra_tags='success')
         return redirect(reverse('account:profile'))
 
 
@@ -267,9 +273,9 @@ class AddSkill(IsTeacher, View):
                 Skill.objects.create(user=request.user.profile,
                                      title=form_skill.cleaned_data.get('title'),
                                      percentage=form_skill.cleaned_data.get('percentage'))
-            messages.success(request, 'با موفقیت اضافه گردید')
+            messages.success(request, 'با موفقیت اضافه گردید', extra_tags='success')
         else:
-            messages.warning(request, 'تعداد مهارت های شما کامل است')
+            messages.warning(request, 'تعداد مهارت های شما کامل است', extra_tags='warning')
         return redirect(reverse('account:profile'))
 
 

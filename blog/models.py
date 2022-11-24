@@ -42,7 +42,7 @@ class Blog(models.Model):
     image = models.ImageField(upload_to='blog/img', verbose_name='عکس')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='blogs', verbose_name='دسته بندی')
     tag = models.ManyToManyField(Tag, verbose_name='برچسب ها')
-    view = models.ManyToManyField(IPAddress, blank=True, null=True, verbose_name='بازدید ها')
+    view = models.ManyToManyField(IPAddress, verbose_name='بازدید ها')
 
     slug = models.SlugField(null=True, blank=True, allow_unicode=True, verbose_name='اسلاگ', help_text='دست نزنید')
 
@@ -70,6 +70,8 @@ class CommentBlog(models.Model):
     text = models.TextField(verbose_name='متن نظر')
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies',
                                verbose_name='کامنت والد')
+
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f'{self.full_name}-{self.blog}'
