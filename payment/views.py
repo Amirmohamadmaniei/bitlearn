@@ -8,7 +8,7 @@ from django.urls import reverse
 from BitLearn import settings
 from course.models import Subscribe
 
-MERCHANT = '8912c1a0-d4c6-4afe-93ea-58d486486ae5'
+MERCHANT = ''
 ZP_API_REQUEST = "https://api.zarinpal.com/pg/v4/payment/request.json"
 ZP_API_VERIFY = "https://api.zarinpal.com/pg/v4/payment/verify.json"
 ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/{authority}"
