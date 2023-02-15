@@ -155,4 +155,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'bitlearning0@gmail.com'
-EMAIL_HOST_PASSWORD = 'kjozdkfklfmrafds'
+EMAIL_HOST_PASSWORD = ''
